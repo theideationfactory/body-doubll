@@ -45,6 +45,32 @@ export const deployFirestoreRules = async () => {
                 resource.data.doubllId == request.auth.uid
               );
             }
+
+            // Match requests collection
+            match /match_requests/{requestId} {
+              allow read: if isAuthenticated() && (
+                resource.data.senderId == request.auth.uid ||
+                resource.data.recipientId == request.auth.uid
+              );
+              allow create: if isAuthenticated();
+              allow update: if isAuthenticated() && (
+                resource.data.senderId == request.auth.uid ||
+                resource.data.recipientId == request.auth.uid
+              );
+              allow delete: if isAuthenticated() && resource.data.senderId == request.auth.uid;
+            }
+
+            // Messages collection
+            match /messages/{messageId} {
+              allow read: if isAuthenticated() && exists(/databases/$(database)/documents/match_requests/$(resource.data.matchId)) && (
+                get(/databases/$(database)/documents/match_requests/$(resource.data.matchId)).data.senderId == request.auth.uid ||
+                get(/databases/$(database)/documents/match_requests/$(resource.data.matchId)).data.recipientId == request.auth.uid
+              );
+              allow create: if isAuthenticated() && exists(/databases/$(database)/documents/match_requests/$(request.resource.data.matchId)) && (
+                get(/databases/$(database)/documents/match_requests/$(request.resource.data.matchId)).data.senderId == request.auth.uid ||
+                get(/databases/$(database)/documents/match_requests/$(request.resource.data.matchId)).data.recipientId == request.auth.uid
+              );
+            }
           }
         }
       `,

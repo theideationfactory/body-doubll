@@ -1,11 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Trophy, Heart, Timer, Users, SmilePlus, Backpack, Stethoscope, LogOut, Search, UserSearch, Sparkles } from 'lucide-react';
+import { Trophy, Heart, Timer, Users, SmilePlus, Backpack, Stethoscope, LogOut, Search, UserSearch, Sparkles, MessageCircle } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { UserProfileButton } from '../components/UserProfileButton';
 import { ClockInButton } from '../components/ClockInButton';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../lib/firebase';
+import { LucideIcon } from 'lucide-react';
+
+interface MenuItem {
+  id: string;
+  name: string;
+  description: string;
+  icon: LucideIcon;
+  gradient: string;
+  path: string;
+}
 
 export function Home() {
   const navigate = useNavigate();
@@ -34,7 +44,7 @@ export function Home() {
     }
   };
 
-  const menuItems = [
+  const baseMenuItems: MenuItem[] = [
     {
       id: 'new-needs',
       name: 'New Needs',
@@ -101,6 +111,30 @@ export function Home() {
     }
   ];
 
+  const profileMenuItem: MenuItem | null = accountType === 'client' 
+    ? {
+        id: 'matching',
+        name: 'Create Doubll Profile',
+        description: 'Set up your profile to find matches',
+        icon: UserSearch,
+        gradient: 'from-violet-500 to-fuchsia-500',
+        path: '/create-doubll-profile'
+      }
+    : accountType === 'doubll'
+    ? {
+        id: 'matching',
+        name: 'Create Client Profile',
+        description: 'Set up your profile to find matches',
+        icon: UserSearch,
+        gradient: 'from-violet-500 to-fuchsia-500',
+        path: '/create-client-profile'
+      }
+    : null;
+
+  const menuItems: MenuItem[] = profileMenuItem 
+    ? [...baseMenuItems, profileMenuItem]
+    : baseMenuItems;
+
   return (
     <div className="min-h-screen bg-[#F5F5F5] p-4">
       {/* Header */}
@@ -108,21 +142,89 @@ export function Home() {
         <div className="flex items-center gap-4">
           <UserProfileButton />
           <ClockInButton />
-          <button
-            onClick={() => navigate('/find-doubll')}
-            className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-all duration-300"
-          >
-            <Search className="w-4 h-4" />
-            <span>Find a Doubll</span>
-          </button>
-          {accountType === 'doubll' && (
-            <button
-              onClick={() => navigate('/find-client')}
-              className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-all duration-300"
-            >
-              <UserSearch className="w-4 h-4" />
-              <span>Find a Client</span>
-            </button>
+          {accountType === 'client' ? (
+            <>
+              <button
+                onClick={() => navigate('/create-doubll-profile')}
+                className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-all duration-300"
+              >
+                <Search className="w-4 h-4" />
+                <span>Create Client Profile</span>
+              </button>
+              <button
+                onClick={() => navigate('/view-matches')}
+                className="flex items-center gap-2 px-4 py-2 bg-violet-100 hover:bg-violet-200 text-violet-700 rounded-lg transition-all duration-300"
+              >
+                <UserSearch className="w-4 h-4" />
+                <span>Find a Doubll</span>
+              </button>
+              <button
+                onClick={() => navigate('/match-requests')}
+                className="flex items-center gap-2 px-4 py-2 bg-emerald-100 hover:bg-emerald-200 text-emerald-700 rounded-lg transition-all duration-300"
+              >
+                <Users className="w-4 h-4" />
+                <span>View Matches</span>
+              </button>
+              <button
+                onClick={() => navigate('/direct-messages')}
+                className="flex items-center gap-2 px-4 py-2 bg-emerald-100 hover:bg-emerald-200 text-emerald-700 rounded-lg transition-all duration-300"
+              >
+                <MessageCircle className="w-4 h-4" />
+                <span>Direct Messages</span>
+              </button>
+            </>
+          ) : accountType === 'doubll' && (
+            <>
+              <button
+                onClick={() => navigate('/create-client-profile')}
+                className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-all duration-300"
+              >
+                <Search className="w-4 h-4" />
+                <span>Create Doubll Profile</span>
+              </button>
+              <button
+                onClick={() => navigate('/view-matches')}
+                className="flex items-center gap-2 px-4 py-2 bg-violet-100 hover:bg-violet-200 text-violet-700 rounded-lg transition-all duration-300"
+              >
+                <UserSearch className="w-4 h-4" />
+                <span>Find a Client</span>
+              </button>
+              {accountType === 'doubll' ? (
+                <>
+                  <button
+                    onClick={() => navigate('/match-requests')}
+                    className="flex items-center gap-2 px-4 py-2 bg-violet-500/20 text-violet-200 rounded-lg hover:bg-violet-500/30 transition-colors"
+                  >
+                    <Users size={20} />
+                    View Matches
+                  </button>
+                  <button
+                    onClick={() => navigate('/direct-messages')}
+                    className="flex items-center gap-2 px-4 py-2 bg-violet-500/20 text-violet-200 rounded-lg hover:bg-violet-500/30 transition-colors"
+                  >
+                    <MessageCircle size={20} />
+                    Direct Messages
+                  </button>
+                </>
+              ) : accountType === 'client' ? (
+                <>
+                  <button
+                    onClick={() => navigate('/match-requests')}
+                    className="flex items-center gap-2 px-4 py-2 bg-violet-500/20 text-violet-200 rounded-lg hover:bg-violet-500/30 transition-colors"
+                  >
+                    <Users size={20} />
+                    View Matches
+                  </button>
+                  <button
+                    onClick={() => navigate('/direct-messages')}
+                    className="flex items-center gap-2 px-4 py-2 bg-violet-500/20 text-violet-200 rounded-lg hover:bg-violet-500/30 transition-colors"
+                  >
+                    <MessageCircle size={20} />
+                    Direct Messages
+                  </button>
+                </>
+              ) : null}
+            </>
           )}
         </div>
         
@@ -155,7 +257,7 @@ export function Home() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {menuItems.map((item) => (
+          {menuItems.map((item: MenuItem) => (
             <button
               key={item.id}
               onClick={() => navigate(item.path)}
@@ -166,7 +268,7 @@ export function Home() {
               
               <div className="relative flex items-center gap-8">
                 <div className={`p-5 rounded-xl bg-gradient-to-br ${item.gradient} shadow-lg group-hover:shadow-${item.gradient.split('-')[1]}-500/25 transition-all duration-500`}>
-                  <item.icon className="w-10 h-10 text-white" strokeWidth={1.5} />
+                  {React.createElement(item.icon, { className: "w-10 h-10 text-white", strokeWidth: 1.5 })}
                 </div>
                 <div className="flex-grow text-left">
                   <h2 className="text-2xl font-bold text-gray-800 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-gray-800 group-hover:to-gray-600 transition-all duration-500">
