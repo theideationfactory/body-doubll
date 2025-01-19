@@ -84,6 +84,16 @@ export function GoTimer() {
           </div>
         </div>
 
+        {/* Privacy Policy Link */}
+        <div className="mt-8 text-center">
+          <a
+            href="/privacy"
+            className="text-white/60 hover:text-white transition-colors text-sm"
+          >
+            Privacy Policy
+          </a>
+        </div>
+
         <AddTimerModal
           isOpen={showAddTimer}
           onClose={() => setShowAddTimer(false)}
