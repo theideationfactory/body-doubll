@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background-color: #F5F5F5;
+  --button-color: #98D8AA;
+  --text-color: #1A1A1A;
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.btn-primary {
+  @apply bg-[#98D8AA] hover:bg-[#7BC68C] text-black font-medium px-4 py-2 rounded-lg transition-all duration-300;
+}
+
+.card {
+  @apply bg-white shadow-md rounded-lg p-6;
+}
+
+.input-field {
+  @apply border border-gray-200 rounded-lg px-4 py-2 focus:ring-2 focus:ring-[#98D8AA] focus:border-[#98D8AA] outline-none pl-12;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-in-out;
+}
