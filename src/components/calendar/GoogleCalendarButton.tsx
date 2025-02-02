@@ -1,8 +1,13 @@
+<<<<<<< HEAD
 import React, { useState, useEffect } from 'react';
+=======
+import React, { useEffect, useState } from 'react';
+>>>>>>> willsterBodyDouble/main
 import { CalendarClock } from 'lucide-react';
 import { useGoogleLogin } from '@react-oauth/google';
 import { Timer } from '../../types/timer';
 import { v4 as uuidv4 } from 'uuid';
+import { calculateDuration } from '../../utils/timeUtils';
 
 interface GoogleCalendarButtonProps {
   onAddTimers: (timers: Timer[]) => void;

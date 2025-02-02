@@ -90,7 +90,29 @@ export function Doubll() {
           </button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 px-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 px-4">
+          <button 
+            onClick={() => navigate('/match-requests')}
+            className="group relative bg-slate-900/50 backdrop-blur-xl p-8 rounded-2xl transition-all duration-500 transform hover:-translate-y-1 hover:scale-105"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-teal-500/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="absolute inset-0 border border-white/10 rounded-2xl group-hover:border-white/20 transition-colors duration-500" />
+            
+            <div className="relative flex flex-col items-center gap-6">
+              <div className="p-5 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 group-hover:from-emerald-400 group-hover:to-teal-400 transition-colors duration-500 shadow-lg group-hover:shadow-emerald-500/25">
+                <UserCheck className="w-14 h-14 text-white" strokeWidth={1.5} />
+              </div>
+              <div className="space-y-3 text-center">
+                <h2 className="text-3xl font-bold text-white group-hover:text-emerald-200 transition-colors duration-500">
+                  View Matches
+                </h2>
+                <p className="text-lg text-emerald-200/60 group-hover:text-emerald-200/80 transition-colors duration-500">
+                  View and manage your match requests
+                </p>
+              </div>
+            </div>
+          </button>
+
           <button className="group relative bg-slate-900/50 backdrop-blur-xl p-8 rounded-2xl transition-all duration-500 transform hover:-translate-y-1 hover:scale-105">
             <div className="absolute inset-0 bg-gradient-to-br from-violet-500/10 to-fuchsia-500/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             <div className="absolute inset-0 border border-white/10 rounded-2xl group-hover:border-white/20 transition-colors duration-500" />
