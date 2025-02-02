@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import React, { useState, useEffect } from 'react';
-=======
 import React, { useEffect, useState } from 'react';
->>>>>>> willsterBodyDouble/main
 import { CalendarClock } from 'lucide-react';
 import { useGoogleLogin } from '@react-oauth/google';
 import { Timer } from '../../types/timer';
