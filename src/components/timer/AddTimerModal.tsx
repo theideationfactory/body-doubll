@@ -17,23 +17,27 @@ export function AddTimerModal({ isOpen, onClose, onAdd }: AddTimerModalProps) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const parsedHours = parseInt(hours || '0');
+    const parsedMinutes = parseInt(minutes || '0');
+    const parsedSeconds = parseInt(seconds || '0');
+    
     const duration = 
-      (parseInt(hours) * 3600000) + 
-      (parseInt(minutes) * 60000) + 
-      (parseInt(seconds) * 1000);
+      (parsedHours * 3600000) + 
+      (parsedMinutes * 60000) + 
+      (parsedSeconds * 1000);
 
     if (duration > 0) {
-      onAdd({
-        id: uuidv4(),
-        name,
-        duration,
-        minimized: false
-      });
-      setName('');
-      setHours('0');
-      setMinutes('0');
-      setSeconds('0');
-      onClose();
+    onAdd({
+      id: uuidv4(),
+      name: name || '',
+      duration,
+      minimized: false
+    });
+    setName('');
+    setHours('0');
+    setMinutes('0');
+    setSeconds('0');
+    onClose();
     }
   };
 
