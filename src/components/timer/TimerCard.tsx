@@ -197,49 +197,52 @@ export function TimerCard({ timer, onDelete, onToggleMinimize }: TimerCardProps)
   return (
     <>
       <div 
-        className={`rounded-lg shadow-xl p-6 bg-gradient-to-br ${getGradientColors()} ${getShadowColor()} transition-all duration-300 ${
+        className={`rounded-lg shadow-xl p-4 bg-gradient-to-br ${getGradientColors()} ${getShadowColor()} transition-all duration-300 ${
           isAlarming ? 'animate-pulse' : ''
         }`}
       >
-        <div className="flex justify-between items-start mb-4">
-          <h3 className="text-lg font-semibold text-white">
+        <div className="flex items-center justify-between gap-4">
+          <h3 className="text-lg font-semibold text-white truncate max-w-[200px]">
             {timer.name || 'Timer'}
           </h3>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={togglePause}
-              className="p-1 text-white/80 hover:text-white transition-colors"
-            >
-              {isPaused ? <Play size={16} /> : <Pause size={16} />}
-            </button>
-            <button
-              onClick={() => setIsFullscreen(true)}
-              className="p-1 text-white/80 hover:text-white transition-colors"
-            >
-              <Maximize2 size={16} />
-            </button>
-            <button
-              onClick={() => onToggleMinimize(timer.id)}
-              className="p-1 text-white/80 hover:text-white transition-colors"
-            >
-              <Minimize2 size={16} />
-            </button>
-            <button
-              onClick={() => onDelete(timer.id)}
-              className="p-1 text-white/80 hover:text-white transition-colors"
-            >
-              <X size={16} />
-            </button>
+          
+          <div className="flex items-center gap-4">
+            <div className="text-2xl md:text-3xl font-bold text-white tabular-nums">
+              {formatTime(timeLeft)}
+            </div>
+            
+            <div className="flex items-center gap-2">
+              <button
+                onClick={togglePause}
+                className="p-1.5 text-white/80 hover:text-white transition-colors hover:bg-white/10 rounded-lg"
+              >
+                {isPaused ? <Play size={18} /> : <Pause size={18} />}
+              </button>
+              <button
+                onClick={() => setIsFullscreen(true)}
+                className="p-1.5 text-white/80 hover:text-white transition-colors hover:bg-white/10 rounded-lg"
+              >
+                <Maximize2 size={18} />
+              </button>
+              <button
+                onClick={() => onToggleMinimize(timer.id)}
+                className="p-1.5 text-white/80 hover:text-white transition-colors hover:bg-white/10 rounded-lg"
+              >
+                <Minimize2 size={18} />
+              </button>
+              <button
+                onClick={() => onDelete(timer.id)}
+                className="p-1.5 text-white/80 hover:text-white transition-colors hover:bg-white/10 rounded-lg"
+              >
+                <X size={18} />
+              </button>
+            </div>
           </div>
         </div>
 
-        <div className="text-3xl font-bold text-white mb-4 text-center">
-          {formatTime(timeLeft)}
-        </div>
-
-        <div className="w-full bg-white/20 rounded-full h-2">
+        <div className="w-full bg-white/20 rounded-full h-1.5 mt-2">
           <div
-            className="h-2 rounded-full transition-all duration-300 bg-white/30"
+            className="h-1.5 rounded-full transition-all duration-300 bg-white/30"
             style={{ width: `${(timeLeft / timer.duration) * 100}%` }}
           />
         </div>
